@@ -128,12 +128,22 @@ figcaption{font-size:.85rem;color:var(--muted);margin-top:.5rem}
 .linha-tempo p{margin:.25rem 0 0;color:var(--muted)}
 .grafico{margin-top:2.5rem;max-width:640px}
 .grafico h3{font-size:1.25rem;margin-bottom:1rem}
-.barra{display:grid;grid-template-columns:9rem 1fr 3rem;gap:.75rem;align-items:center;margin:.55rem 0;font-size:.95rem}
+.barra{display:grid;grid-template-columns:9rem 1fr 4.75rem;gap:.75rem;align-items:center;margin:.55rem 0;font-size:.95rem}
 .barra .trilho{height:14px;background:var(--line);border-radius:999px;overflow:hidden}
 .barra .preenchido{height:100%;background:var(--accent);border-radius:999px}
 .barra .num{text-align:right;font-weight:700}
-.total{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:clamp(3rem,8vw,4.5rem);line-height:1;margin-top:2rem}
+.total{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:clamp(3rem,8vw,4.5rem);line-height:1;margin:2.5rem 0 0}
 .total+p{margin:.25rem 0 0;color:var(--muted)}
+
+/* destaques da pesquisa */
+.destaques{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2.5rem}
+.destaque{border-top:5px solid var(--cor);padding-top:1rem}
+.destaque p{margin:.4rem 0 0;color:var(--muted)}
+.destaque .num-grande{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:clamp(2.8rem,7vw,4rem);line-height:1;color:var(--ink);margin:0}
+@media (max-width:720px){.destaques{grid-template-columns:1fr}}
+.leitura{margin-top:3rem;max-width:640px}
+.leitura p{margin:.75rem 0 0}
+.leitura .nota{color:var(--muted);font-size:.95rem}
 
 /* quem somos */
 .equipe{list-style:none;padding:0;margin:2rem 0 0;display:flex;flex-wrap:wrap;gap:.6rem}
@@ -154,6 +164,7 @@ footer{padding-block:2rem 2.5rem;color:var(--muted);font-size:.9rem}
         <li><a href="#atitudes">Atitudes</a></li>
         <li><a href="#voce-sabia">Você sabia?</a></li>
         <li><a href="#participe">Participe</a></li>
+        <li><a href="#resultados">Resultados</a></li>
         <li><a href="#quem-somos">Quem somos</a></li>
       </ul>
     </nav>
@@ -276,6 +287,24 @@ footer{padding-block:2rem 2.5rem;color:var(--muted);font-size:.9rem}
     </div>
   </section>
 
+  <section id="resultados">
+    <div class="wrap">
+      <h2>O que a pesquisa mostrou</h2>
+      <p class="intro">Resultados parciais da pesquisa com quem mora, trabalha ou circula pelo Jardim das Bandeiras, respondida entre 18 e 21 de outubro de 2026.</p>
+      <div class="destaques">
+        <div class="destaque" style="--cor:var(--vermelho)"><p class="num-grande">71%</p><p>veem lixo ou entulho nas ruas com frequência (nota 4 ou 5, numa escala de 1 a 5)</p></div>
+        <div class="destaque" style="--cor:var(--marrom)"><p class="num-grande">57%</p><p>não sabem onde descartar entulho, móveis velhos e eletrônicos</p></div>
+        <div class="destaque" style="--cor:var(--azul)"><p class="num-grande">4 de 7</p><p>não sabem nem os dias da coleta nem onde descartar entulho</p></div>
+      </div>
+      <div id="caixa-resultados"></div>
+      <div class="leitura">
+        <h3>Como isso orienta o projeto</h3>
+        <p>O lixo nas ruas é percebido por quase todos, mas a informação sobre como descartar ainda não chegou à maioria. Isso confirma a nossa escolha: antes de investir em equipamentos, é preciso investir em conscientização. Por isso vamos reforçar a orientação sobre a coleta e o descarte de entulho nos cartazes, no site e na ação educativa.</p>
+        <p class="nota">Amostra pequena, com 7 respostas: os números mostram tendências, não conclusões definitivas. A pesquisa continua aberta e os resultados serão atualizados.</p>
+      </div>
+    </div>
+  </section>
+
   <section id="quem-somos">
     <div class="wrap">
       <h2>Quem somos</h2>
@@ -306,10 +335,12 @@ const CONFIG = {
   // Link do Google Forms (o link do respondente, que começa com https://forms.gle/ ou https://docs.google.com/forms/)
   formUrl: "https://forms.gle/CD7FJ4wadasdVLEY8",
   // Resultados da pesquisa: preencha com os números da aba "Respostas" do Google Forms
-  totalRespostas: 0,
+  totalRespostas: 7,
   graficos: [
-    { pergunta: "Você sabe os dias e horários da coleta?", opcoes: [["Sim",0],["Mais ou menos",0],["Não",0]] },
-    { pergunta: "Você sabe onde descartar entulho, móveis e eletrônicos?", opcoes: [["Sim",0],["Não",0]] }
+    { pergunta: "Com que frequência você vê lixo ou entulho nas ruas?", opcoes: [["1 (nunca)",1],["2",0],["3",1],["4",2],["5 (sempre)",3]] },
+    { pergunta: "Você sabe onde descartar entulho, móveis e eletrônicos?", opcoes: [["Sim",3],["Não",4]] },
+    { pergunta: "Você sabe os dias e horários da coleta?", opcoes: [["Sim",3],["Talvez",2],["Não",2]] },
+    { pergunta: "Qual sua relação com o bairro?", opcoes: [["Moro aqui",3],["Estudo ou passo por aqui",3],["Trabalho ou tenho comércio",1]] }
   ]
 };
 
@@ -343,13 +374,13 @@ const CONFIG = {
     c.innerHTML = '<p class="aviso">Os gráficos da pesquisa aparecem aqui assim que os números da aba “Respostas” forem adicionados em totalRespostas e graficos, na configuração do site.</p>';
     return;
   }
-  let html = '<p class="total">' + CONFIG.totalRespostas + '</p><p>moradores responderam à pesquisa</p>';
+  let html = '<p class="total">' + CONFIG.totalRespostas + '</p><p>pessoas responderam à pesquisa até agora</p>';
   CONFIG.graficos.forEach(g => {
     const soma = g.opcoes.reduce((s,o)=>s+o[1],0) || 1;
     html += '<div class="grafico"><h3>' + g.pergunta + '</h3>';
     g.opcoes.forEach(o => {
       const pct = Math.round(o[1]/soma*100);
-      html += '<div class="barra"><span>' + o[0] + '</span><span class="trilho"><span class="preenchido" style="display:block;width:' + pct + '%"></span></span><span class="num">' + pct + '%</span></div>';
+      html += '<div class="barra"><span>' + o[0] + '</span><span class="trilho"><span class="preenchido" style="display:block;width:' + pct + '%"></span></span><span class="num">' + pct + '% (' + o[1] + ')</span></div>';
     });
     html += '</div>';
   });
